@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 const app = express()
 
 const authTeacherRouter = require("./routes/teacherAuth");
+const authUserRouter = require("./routes/userAuth");
 const quizRouter = require("./routes/quiz");
 
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -20,8 +21,8 @@ app.use((req, res, next) => {
 });
 
 app.use(authTeacherRouter);
+app.use(authUserRouter);
 app.use(quizRouter);
-
 
 mongoose.connect(
     'mongodb+srv://Karlsdevil:Rahul@123@cluster0.uyrei.mongodb.net/MarksUp?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true }
