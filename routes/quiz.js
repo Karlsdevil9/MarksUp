@@ -53,13 +53,13 @@ router.get("/get/teacher/quizes", isAuth, (req, res, next) => {
         user.populate('quiz.quizes.quizId')
             .execPopulate().then(result => {
                 res.json({
-                    quizes: result.quiz.quizes.quizId
+                    quizes: result.quiz.quizes
                 })
             });
     });
 });
 
-router.get("/get/quizByUniqueCode", (req, res, next) => {
+router.post("/get/quizByUniqueCode", (req, res, next) => {
     const uniqueCode = req.body.uniqueCode;
     Quiz.findOne({ uniqueCode: uniqueCode }).then(result => {
         if (result) {
