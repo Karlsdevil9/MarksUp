@@ -32,7 +32,22 @@ const quizSchema = new mongoose.Schema({
         maxlength: 60
     },
 
-    questionList: []
+    questionList: [],
+    userlist: [{
+        userId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User',
+            required: true
+        },
+        marks: {
+            type: Number,
+            required: true
+        },
+        time: {
+            type: Number,
+            required: true
+        }
+    }]
 
 
 }, {

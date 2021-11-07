@@ -21,6 +21,14 @@ const userSchema = new mongoose.Schema({
                 ref: 'Quiz',
                 required: true
             },
+            marks: {
+                type: Number,
+                required: true
+            },
+            time: {
+                type: Number,
+                required: true
+            }
         }]
     }
 
