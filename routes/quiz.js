@@ -86,7 +86,7 @@ router.post("/get/result", (req, res, next) => {
 
                         return b.time - a.time;
                     }
-                    return a.marks > b.marks ? 1 : -1;
+                    return a.marks < b.marks ? 1 : -1;
                 });
             res.json({ result: userList });
         } else {
