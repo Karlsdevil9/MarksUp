@@ -75,7 +75,7 @@ router.post("/get/quizByUniqueCode", (req, res, next) => {
 
 });
 
-router.get("/get/result", (req, res, next) => {
+router.post("/get/result", (req, res, next) => {
     const uniqueCode = req.body.uniqueCode;
     Quiz.findOne({ uniqueCode: uniqueCode }).then(result => {
         if (result) {
@@ -94,7 +94,7 @@ router.get("/get/result", (req, res, next) => {
         }
     })
 })
-router.get("/get/studentResult", isAuth, (req, res, next) => {
+router.post("/get/studentResult", isAuth, (req, res, next) => {
     const uniqueCode = req.body.uniqueCode;
     console.log(req.userId);
     student.findById(req.userId).then(user => {
