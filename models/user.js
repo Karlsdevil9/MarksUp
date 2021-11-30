@@ -21,6 +21,10 @@ const userSchema = new mongoose.Schema({
                 ref: 'Quiz',
                 required: true
             },
+            quizName: {
+                type: String,
+                required: true
+            },
             marks: {
                 type: Number,
                 required: true

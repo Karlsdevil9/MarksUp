@@ -3,6 +3,7 @@ const router = express.Router();
 
 const isAuth = require('../middleware/isAuth')
 const User = require('../models/teacher')
+
 const student = require('../models/user')
 const Quiz = require("../models/quiz")
 
@@ -51,7 +52,6 @@ router.post("/quiz/create", isAuth, (req, res, next) => {
 
 router.get("/get/teacher/quizes", isAuth, (req, res, next) => {
     User.findById(req.userId).then(user => {
-
         user.populate('quiz.quizes.quizId')
             .execPopulate().then(result => {
                 res.json({
@@ -75,6 +75,41 @@ router.post("/get/quizByUniqueCode", (req, res, next) => {
 
 });
 
+router.get("/get/result", (req, res, next) => {
+    const uniqueCode = req.body.uniqueCode;
+    Quiz.findOne({ uniqueCode: uniqueCode }).then(result => {
+        if (result) {
+            const userList = result.userlist;
+            userList.sort(
+                function(a, b) {
+                    if (a.marks === b.marks) {
+
+                        return b.time - a.time;
+                    }
+                    return a.marks > b.marks ? 1 : -1;
+                });
+            res.json({ result: userList });
+        } else {
+            res.json({ message: "There is no quiz exits with this uniqueCode" });
+        }
+    })
+})
+router.get("/get/studentResult", isAuth, (req, res, next) => {
+    const uniqueCode = req.body.uniqueCode;
+    console.log(req.userId);
+    student.findById(req.userId).then(user => {
+        console.log(user)
+        var quizList = [];
+        quizList = user.quiz.quizes;
+        quizList.forEach(element => {
+            if (element.quizName == uniqueCode) {
+                res.json({ result: element })
+            }
+        });
+
+    });
+})
+
 router.post("/del/quiz", isAuth, (req, res, next) => {
     const uniqueCode = req.body.uniqueCode;
     Quiz.findOneAndDelete({ uniqueCode: uniqueCode }).then(result => {
@@ -93,6 +128,7 @@ router.post("/del/quiz", isAuth, (req, res, next) => {
 
 router.post("/submit/quiz", isAuth, (req, res, next) => {
     const quizId = req.body.quizId;
+    const uniqueCode = req.body.uniqueCode
     var marks = 0;
     var time = 0;
 
@@ -106,12 +142,13 @@ router.post("/submit/quiz", isAuth, (req, res, next) => {
     student.findById(req.userId).then(user => {
         user.quiz.quizes = user.quiz.quizes || [];
         console.log("Rahul----");
-        user.quiz.quizes.push({ quizId: quizId, marks: marks, time: time });
+        user.quiz.quizes.push({ quizId: quizId, quizName: uniqueCode, marks: marks, time: time });
         return user.save();
     }).then(result => {
         Quiz.findById(quizId).then(quiz => {
             quiz.userlist = quiz.userlist || [];
-            quiz.userlist.push({ userId: req.userId, marks: marks, time: time })
+            console.log(req.username)
+            quiz.userlist.push({ userId: req.userId, username: req.username, marks: marks, time: time })
             return quiz.save();
         }).then(_ => { res.json({ "message": "submitted" }); });
     })

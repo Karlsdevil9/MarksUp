@@ -55,7 +55,8 @@ router.post('/user/signIn', (req, res, next) => {
         } else {
             const token = jwt.sign({
                     email: loadeduser.email,
-                    teacherId: loadeduser._id.toString()
+                    teacherId: loadeduser._id.toString(),
+                    name: loadeduser.name.toString()
                 },
                 'somesupersecretsecret', { expiresIn: '1h' }
             );
