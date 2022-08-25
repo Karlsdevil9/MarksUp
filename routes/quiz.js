@@ -74,7 +74,7 @@ router.post("/get/quizByUniqueCode", (req, res, next) => {
     })
 
 });
-
+router.get()
 router.post("/get/result", (req, res, next) => {
     const uniqueCode = req.body.uniqueCode;
     Quiz.findOne({ uniqueCode: uniqueCode }).then(result => {

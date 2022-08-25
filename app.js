@@ -25,7 +25,7 @@ app.use(authUserRouter);
 app.use(quizRouter);
 
 mongoose.connect(
-    'mongodb+srv://Karlsdevil:Rahul@123@cluster0.uyrei.mongodb.net/MarksUp?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true }
+    'Your MongoDb List', { useNewUrlParser: true, useUnifiedTopology: true }
 ).then(result => {
 
     app.listen(process.env.PORT || 3000, () => {
